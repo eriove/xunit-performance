@@ -54,8 +54,11 @@ namespace Microsoft.ProcessDomain
             domain._pipe = pipeServer;
 
             //start waiting for a connection before creating the process
+#if net45
+            Task clientConnected = Task.Factory.StartNew(() => pipeServer.WaitForConnection());
+#else
             Task clientConnected = pipeServer.WaitForConnectionAsync(); // new CancellationTokenSource(2000).Token);
-
+#endif
             //create the process
             var proc = domain.CreateDomainProcess(executablePath, runElevated);
 
