@@ -91,7 +91,7 @@ namespace Microsoft.Xunit.Performance.Analysis
             if (xmlPaths.Count == 0)
                 return Usage();
 
-            var allIterations = ParseXmlFiles(xmlPaths);
+            var allIterations = ParseXmlFiles(xmlPaths).ToList();
 
             var testResults = SummarizeTestResults(allIterations);
 
@@ -121,14 +121,14 @@ namespace Microsoft.Xunit.Performance.Analysis
 
                     // Compute the standard error in the difference
                     var baselineCount = baselineTest.Iterations.Count;
-                    var baselineSum = baselineTest.Iterations.Sum(iteration => iteration.MetricValues["duration"]);
+                    var baselineSum = baselineTest.Iterations.Sum(iteration => iteration.MetricValues["Duration"]);
                     var baselineSumSquared = baselineSum * baselineSum;
-                    var baselineSumOfSquares = baselineTest.Iterations.Sum(iteration => iteration.MetricValues["duration"] * iteration.MetricValues["duration"]);
+                    var baselineSumOfSquares = baselineTest.Iterations.Sum(iteration => iteration.MetricValues["Duration"] * iteration.MetricValues["Duration"]);
 
                     var comparisonCount = comparisonTest.Iterations.Count;
-                    var comparisonSum = comparisonTest.Iterations.Sum(iteration => iteration.MetricValues["duration"]);
+                    var comparisonSum = comparisonTest.Iterations.Sum(iteration => iteration.MetricValues["Duration"]);
                     var comparisonSumSquared = comparisonSum * comparisonSum;
-                    var comparisonSumOfSquares = comparisonTest.Iterations.Sum(iteration => iteration.MetricValues["duration"] * iteration.MetricValues["duration"]);
+                    var comparisonSumOfSquares = comparisonTest.Iterations.Sum(iteration => iteration.MetricValues["Duration"] * iteration.MetricValues["Duration"]);
 
                     var stdErrorDiff = Math.Sqrt((baselineSumOfSquares - (baselineSumSquared / baselineCount) + comparisonSumOfSquares - (comparisonSumSquared / comparisonCount)) * (1.0 / baselineCount + 1.0 / comparisonCount) / (baselineCount + comparisonCount - 1));
                     var interval = stdErrorDiff * MathNet.Numerics.ExcelFunctions.TInv(1.0 - ErrorConfidence, baselineCount + comparisonCount - 2);
@@ -137,8 +137,8 @@ namespace Microsoft.Xunit.Performance.Analysis
                     comparisonResult.BaselineResult = baselineTest;
                     comparisonResult.ComparisonResult = comparisonTest;
                     comparisonResult.TestName = comparisonTest.TestName;
-                    comparisonResult.PercentChange = (comparisonTest.Stats["duration"].Mean - baselineTest.Stats["duration"].Mean) / baselineTest.Stats["duration"].Mean;
-                    comparisonResult.PercentChangeError = interval / baselineTest.Stats["duration"].Mean;
+                    comparisonResult.PercentChange = (comparisonTest.Stats["Duration"].Mean - baselineTest.Stats["Duration"].Mean) / baselineTest.Stats["Duration"].Mean;
+                    comparisonResult.PercentChangeError = interval / baselineTest.Stats["Duration"].Mean;
 
                     comparisonResults.Add(comparisonResult);
                 }
@@ -215,7 +215,7 @@ namespace Microsoft.Xunit.Performance.Analysis
                 resultElem.Add(comparisonElem);
 
                 comparisonElem.Add(
-                    new XElement("duration",
+                    new XElement("Duration",
                         new XAttribute("changeRatio", comparison.PercentChange.ToString("G3")),
                         new XAttribute("changeRatioError", comparison.PercentChangeError.ToString("G3"))));
             }
@@ -324,7 +324,7 @@ namespace Microsoft.Xunit.Performance.Analysis
         private static IEnumerable<TestIterationResult> ParseXmlFiles(IEnumerable<string> etlPaths)
         {
             return
-                from path in etlPaths.AsParallel()
+                from path in etlPaths
                 from result in ParseOneXmlFile(path)
                 select result;
         }

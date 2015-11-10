@@ -7,8 +7,8 @@
     <ProjectGuid>{7FB32036-1030-4F6F-8E91-BE76CDFC0C60}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>xunit.performance.analysis.net45</RootNamespace>
-    <AssemblyName>xunit.performance.analysis.net45</AssemblyName>
+    <RootNamespace>xunit.performance.analysis</RootNamespace>
+    <AssemblyName>xunit.performance.analysis</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\xunit.performance.analysis.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\xunit.performance.analysis.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MathNet.Numerics, Version=3.8.0.0, Culture=neutral, processorArchitecture=MSIL">

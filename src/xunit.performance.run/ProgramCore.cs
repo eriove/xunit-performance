@@ -221,6 +221,10 @@ Arguments: {startInfo.Arguments}");
 
         private XunitPerformanceProject ParseCommandLine(string[] args)
         {
+            for(int i =0;i<args.Length;i++)
+            {
+                args[i] = args[i].Replace("\"", "");
+            }
             var arguments = new Stack<string>();
             for (var i = args.Length - 1; i >= 0; i--)
                 arguments.Push(args[i]);
